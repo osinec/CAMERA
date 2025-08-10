@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Как начать снимать свои истории — пошаговая инструкция</title>
+
+  <!-- Google Fonts: Inter + Playfair Display -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    :root {
+      --primary: #5a7abd;
+      --primary-dark: #4a6fa5;
+      --accent: #ff6b6b;
+      --accent-light: #ffd1d1;
+      --text: #2d3748;
+      --text-light: #718096;
+      --white: #ffffff;
+      --bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --radius: 16px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: #f0f4f8;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(90, 122, 189, 0.1) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(255, 107, 107, 0.08) 0%, transparent 30%);
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Кастомный курсор */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      opacity: 0.7;
+      transition: transform 0.05s, background 0.3s;
+    }
+
+    .cursor-outline {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9998;
+      opacity: 0.4;
+      transition: transform 0.1s, border 0.3s;
+    }
+
+    header {
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(90, 122, 189, 0.8), rgba(74, 111, 165, 0.7));
+      z-index: 1;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
+      opacity: 0.4;
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .header-content {
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      color: white;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards 0.2s;
+    }
+
+    header p {
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2rem;
+      max-width: 600px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards 0.4s;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: -5rem auto 3rem;
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin: 2.5rem 0;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: 1px solid #e2e8f0;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .step-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      border-color: var(--primary-dark);
+    }
+
+    .step-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--primary), #3e5d99);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-icon i {
+      color: white;
+      font-size: 1.8rem;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.3s;
+    }
+
+    .step-icon::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .step-card:hover .step-icon::before {
+      opacity: 1;
+    }
+
+    .step-card:hover .step-icon i {
+      transform: scale(1.1);
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.2rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 50px;
+      height: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    p {
+      color: var(--text-light);
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      margin-bottom: 1.4rem;
+      padding-left: 1.6rem;
+      color: var(--text-light);
+    }
+
+    li {
+      margin-bottom: 0.6rem;
+    }
+
+    .highlight {
+      background: linear-gradient(120deg, transparent 0%, rgba(90, 122, 189, 0.1) 100%);
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.4rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.5rem 0;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .tip {
+      background: linear-gradient(to right, #eef5ff, #f0f8ff);
+      border-left: 4px solid var(--primary);
+      padding: 1.2rem 1.4rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1.8rem 0;
+      font-style: italic;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tip::before {
+      content: "💡";
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.2rem;
+      opacity: 0.6;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--primary), #3e5d99);
+      color: white;
+      padding: 0.9rem 1.8rem;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(90, 122, 189, 0.3);
+      transition: var(--transition);
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(90, 122, 189, 0.4);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: white;
+      background: linear-gradient(135deg, var(--primary-dark), #2c4a7f);
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      margin-top: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
+    }
+
+    footer p {
+      margin: 0;
+      font-size: 1rem;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      header p {
+        font-size: 1.1rem;
+      }
+      .container {
+        padding: 1rem;
+      }
+      .step-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Кастомный курсор -->
+  <div class="cursor"></div>
+  <div class="cursor-outline"></div>
+
+  <header>
+    <div class="header-content">
+      <h1><i class="fas fa-video"></i> Как начать снимать свои истории</h1>
+      <p>Пошаговая инструкция. Каждый шаг — как в жизни. Повторяй за мной.</p>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-lightbulb"></i></div>
+      <h2>Шаг 1: Придумай, о чём расскажешь</h2>
+      <p>Выбери одну простую тему:</p>
+      <ul>
+        <li>Твой утренний ритуал</li>
+        <li>Что вдохновляет тебя</li>
+        <li>Совет, который помог тебе</li>
+      </ul>
+      <div class="tip">
+        Не пытайся охватить всё. Одна история — одна мысль.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+      <h2>Шаг 2: Запиши короткий план</h2>
+      <p>Не заучивай текст. Напиши:</p>
+      <ul>
+        <li>Начало: «Привет! Сегодня расскажу о...»</li>
+        <li>2–3 ключевые мысли</li>
+        <li>Конец: «Спасибо за внимание!»</li>
+      </ul>
+      <div class="highlight">
+        📝 У тебя должен быть подготовленный текст — как опора, а не как шпаргалка.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-paint-brush"></i></div>
+      <h2>Шаг 3: Преврати текст в образы</h2>
+      <p>Вместо слов — создай <strong>зарисовки в голове</strong>.</p>
+      <p>Например: вместо «я люблю читать» — представь: <em>кресло, тёплый плед, книга, вечер</em>.</p>
+      <div class="highlight">
+        🎨 Визуальные образы гораздо труднее забыть, чем слова.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-camera"></i></div>
+      <h2>Шаг 4: Подготовь место</h2>
+      <p>Выбери тихое место с хорошим светом (у окна). Затем:</p>
+      <ul>
+        <li>Убери отвлекающие предметы: вешалки, посуду, провода</li>
+        <li>Поставь телефон на штатив или устойчивую поверхность</li>
+        <li>Проверь, чтобы фон был чистым и нейтральным</li>
+      </ul>
+      <div class="highlight">
+        🧹 Убери всё лишнее из кадра — зритель должен видеть только тебя.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-ruler"></i></div>
+      <h2>Шаг 5: Встань на расстоянии вытянутой руки</h2>
+      <p>Отойди от камеры так, чтобы в кадре были:</p>
+      <ul>
+        <li>Голова и плечи</li>
+        <li>Чуть пространства сверху</li>
+        <li>Руки — в движении, но не за кадром</li>
+      </ul>
+      <div class="highlight">
+        📏 Идеальное расстояние — вытянутой руки. Не ближе, не дальше.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-eye"></i></div>
+      <h2>Шаг 6: Смотри в объектив, а не на экран</h2>
+      <p>Ты должен смотреть в камеру, даже если видишь себя на экране.</p>
+      <ul>
+        <li>Не смотри на своё лицо — это разрушает контакт</li>
+        <li>Если нужно посмотреть в текст — отведи взгляд, потом вернись в камеру</li>
+      </ul>
+      <div class="highlight">
+        👁️ Смотри в область камеры. Старайся не отводить взгляд.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-hands"></i></div>
+      <h2>Шаг 7: Жестикулируй свободно</h2>
+      <p>Позволь себе быть естественным(ной):</p>
+      <ul>
+        <li>Руки — в движении, но не хаотично</li>
+        <li>Не держи их «как в коробке» — скрещённые или прижатые</li>
+        <li>Пусть жесты помогают выразить мысль</li>
+      </ul>
+      <div class="highlight">
+        ✋ Жесты — не как в коробке. Двигай руками свободно.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-comment"></i></div>
+      <h2>Шаг 8: Говори чуть медленнее обычного</h2>
+      <p>В камере всё звучит иначе. Чтобы тебя было легче понять:</p>
+      <ul>
+        <li>Говори чуть медленнее, чем в жизни</li>
+        <li>Делай лёгкие паузы между фразами</li>
+        <li>Не бойся молчания — оно помогает зрителю усвоить мысль</li>
+      </ul>
+      <div class="highlight">
+        🐢 Говори чуть медленнее. Так тебя легче понять.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-play-circle"></i></div>
+      <h2>Шаг 9: Сними пробный ролик</h2>
+      <p>Запиши 20–30 секунд. Потом проверь:</p>
+      <ul>
+        <li>Ты в фокусе?</li>
+        <li>Хорошо ли слышно голос?</li>
+        <li>Ты смотришь в камеру?</li>
+        <li>Фон не отвлекает?</li>
+      </ul>
+      <p>Повторяй, пока не почувствуешь уверенность.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-film"></i></div>
+      <h2>Шаг 10: Сними основное видео</h2>
+      <p>Теперь — "настоящее" видео:</p>
+      <ul>
+        <li>Включи запись</li>
+        <li>Сделай вдох</li>
+        <li>Начни говорить, глядя в камеру</li>
+        <li>Если ошибёшься — просто начни фразу заново</li>
+      </ul>
+      <p>Длительность: 30–60 секунд — идеально для старта.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-subscript"></i></div>
+      <h2>Шаг 11: Добавь субтитры</h2>
+      <p>80% смотрят видео без звука. Поэтому:</p>
+      <ul>
+        <li>Включи субтитры в редакторе (Instagram, CapCut, YouTube)</li>
+        <li>Проверь, правильно ли распознался текст</li>
+        <li>Сделай шрифт крупным и контрастным</li>
+      </ul>
+      <div class="highlight">
+        📝 Добавь субтитры. Большинство смотрят без звука.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-mobile-alt"></i></div>
+      <h2>Шаг 12: Посмотри видео на телефоне</h2>
+      <p>Открой видео на маленьком экране:</p>
+      <ul>
+        <li>Чётко ли видно картинку?</li>
+        <li>Хорошо ли слышно звук?</li>
+        <li>Видны ли субтитры?</li>
+      </ul>
+      <div class="highlight">
+        📱 Проверь видео на телефоне — так увидишь, как оно выглядит у зрителя.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-clock"></i></div>
+      <h2>Шаг 13: Не публикуй сразу</h2>
+      <p>Отложи видео на 10–15 минут:</p>
+      <ul>
+        <li>Займись чем-то другим</li>
+        <li>Потом посмотри свежим взглядом</li>
+        <li>Если что-то режет — поправь</li>
+      </ul>
+      <div class="highlight">
+        ⏳ Не публикуй сразу. Подожди, посмотри свежим взглядом.
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-bullhorn"></i></div>
+      <h2>Шаг 14: Закончи призывом</h2>
+      <p>Добавь в конец:</p>
+      <ul>
+        <li>«Напиши в комментариях, как прошёл твой день»</li>
+        <li>«Следи за моей неделей — завтра будет про кулинарию»</li>
+        <li>«Поставь ❤️, если было интересно»</li>
+      </ul>
+      <div class="highlight">
+        📣 Заканчивай призывом. Что зритель может сделать дальше?
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-icon"><i class="fas fa-rocket"></i></div>
+      <h2>Шаг 15: Опубликуй и поделись</h2>
+      <p>Ты прошёл все шаги. Теперь:</p>
+      <ul>
+        <li>Опубликуй видео</li>
+        <li>Напиши короткую подпись</li>
+        <li>Поделись с друзьями</li>
+      </ul>
+      <p>Ты сделал это. Поздравляю!</p>
+      <a href="#" class="btn"><i class="fas fa-check"></i> Готово — опубликовать</a>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Как начать снимать. Главное — начать. А не быть идеальным.</p>
+  </footer>
+
+  <script>
+    // Кастомный курсор
+    const cursor = document.querySelector('.cursor');
+    const cursorOutline = document.querySelector('.cursor-outline');
+
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+      
+      setTimeout(() => {
+        cursorOutline.style.left = e.clientX + 'px';
+        cursorOutline.style.top = e.clientY + 'px';
+      }, 10);
+    });
+
+    // Анимация появления карточек при прокрутке
+    const cards = document.querySelectorAll('.step-card');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    cards.forEach(card => observer.observe(card));
+  </script>
+
+</body>
+</html>
