@@ -25,6 +25,12 @@
       --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       --radius: 16px;
+
+      /* Новые цвета для шагов */
+      --step-prepare: #4a9eff;
+      --step-shoot: #ff9a3d;
+      --step-edit: #6ecb8a;
+      --step-publish: #b37fdb;
     }
 
     * {
@@ -36,10 +42,10 @@
     body {
       font-family: 'Inter', sans-serif;
       color: var(--text);
-      background: #f0f4f8;
+      background: #f8fafc;
       background-image: 
-        radial-gradient(circle at 20% 30%, rgba(90, 122, 189, 0.1) 0%, transparent 25%),
-        radial-gradient(circle at 80% 70%, rgba(255, 107, 107, 0.08) 0%, transparent 30%);
+        radial-gradient(circle at 20% 30%, rgba(74, 158, 255, 0.1), transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(255, 154, 61, 0.08), transparent 30%);
       line-height: 1.7;
       overflow-x: hidden;
     }
@@ -61,7 +67,7 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: linear-gradient(135deg, rgba(90, 122, 189, 0.8), rgba(74, 111, 165, 0.7));
+      background: linear-gradient(135deg, var(--step-prepare), #3a7bcb);
       z-index: 1;
     }
 
@@ -72,8 +78,8 @@
       right: -30%;
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, var(--accent-light) 0%, transparent 70%);
-      opacity: 0.4;
+      background: radial-gradient(circle, rgba(255, 154, 61, 0.15), transparent 70%);
+      opacity: 0.5;
       border-radius: 50%;
       z-index: 0;
     }
@@ -140,13 +146,28 @@
     .step-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-      border-color: var(--primary-dark);
+    }
+
+    /* Цветные иконки по типу шага */
+    .step-prepare .step-icon {
+      background: linear-gradient(135deg, var(--step-prepare), #3a7bcb);
+    }
+
+    .step-shoot .step-icon {
+      background: linear-gradient(135deg, var(--step-shoot), #e67e22);
+    }
+
+    .step-edit .step-icon {
+      background: linear-gradient(135deg, var(--step-edit), #4cb868);
+    }
+
+    .step-publish .step-icon {
+      background: linear-gradient(135deg, var(--step-publish), #9b59b6);
     }
 
     .step-icon {
       width: 70px;
       height: 70px;
-      background: linear-gradient(135deg, var(--primary), #3e5d99);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -154,14 +175,8 @@
       margin-bottom: 1.5rem;
       position: relative;
       overflow: hidden;
-    }
-
-    .step-icon i {
       color: white;
       font-size: 1.8rem;
-      position: relative;
-      z-index: 2;
-      transition: transform 0.3s;
     }
 
     .step-icon::before {
@@ -181,14 +196,10 @@
       opacity: 1;
     }
 
-    .step-card:hover .step-icon i {
-      transform: scale(1.1);
-    }
-
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 1.9rem;
-      color: var(--primary-dark);
+      color: var(--text);
       margin-bottom: 1.2rem;
       position: relative;
       display: inline-block;
@@ -281,30 +292,28 @@
       text-align: center;
       padding: 3rem 2rem;
       color: white;
-      background: linear-gradient(135deg, var(--primary-dark), #2c4a7f);
+      background: linear-gradient(135deg, #4a6fa5, #2c4a7f);
       border-top-left-radius: 40px;
       border-top-right-radius: 40px;
       margin-top: 3rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    footer::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%);
     }
 
     footer p {
       margin: 0;
       font-size: 1rem;
       opacity: 0.9;
-      position: relative;
-      z-index: 2;
+    }
+
+    /* Номера шагов */
+    .step-number {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      opacity: 0.2;
+      pointer-events: none;
+      user-select: none;
     }
 
     @media (max-width: 768px) {
@@ -326,28 +335,33 @@
 <body>
 
   <header>
-   <div class="header-content">
+    <div class="header-content">
+      <h1><i class="fas fa-video"></i> Как начать снимать свои истории</h1>
       <p>Пошаговая инструкция для съемки на камеру.</p>
     </div>
   </header>
 
   <div class="container">
 
-    <div class="step-card">
+    <div class="step-card step-prepare">
+      <div class="step-number">1</div>
       <div class="step-icon"><i class="fas fa-lightbulb"></i></div>
       <h2>Шаг 1: Тема</h2>
       <p>Прежде чем записывать, у тебя должна быть подготовлена тема, о которой будешь рассказывать, и примерное понимание того, какой длины будет ролик.</p>
     </div>
 
-    <div class="step-card">
+    <div class="step-card step-prepare">
+      <div class="step-number">2</div>
       <div class="step-icon"><i class="fas fa-file-alt"></i></div>
       <h2>Шаг 2: Текст</h2>
-      <p>Не заучивай текст. Если хочешь забыть текст, пока рассказываешь, — заучи его. Сделай зарисовки вместо текста, на которые будешь опираться при рассказе. Образы намного проще запомнить и гораздо легче вспомнить, о чем нужно говорить. </p>
+      <p>Не заучивай текст. Если хочешь забыть текст, пока рассказываешь, — заучи его. Сделай зарисовки вместо текста, на которые будешь опираться при рассказе. Образы намного проще запомнить и гораздо легче вспомнить, о чем нужно говорить.</p>
       <div class="highlight">
-       Сделай по 2-3 зарисовки для вступления, основной части и завершения.
+        Сделай по 2–3 зарисовки для вступления, основной части и завершения.
       </div>
     </div>
-    <div class="step-card">
+
+    <div class="step-card step-prepare">
+      <div class="step-number">3</div>
       <div class="step-icon"><i class="fas fa-camera"></i></div>
       <h2>Шаг 3: Подготовь место</h2>
       <p>Выбери тихое место с хорошим светом. Затем:</p>
@@ -358,7 +372,9 @@
         <li>Небольшие предметы интерьера сделают фон и картинку интереснее — выбери свой вариант!</li>
       </ul>
     </div>
-    <div class="step-card">
+
+    <div class="step-card step-shoot">
+      <div class="step-number">4</div>
       <div class="step-icon"><i class="fas fa-eye"></i></div>
       <h2>Шаг 4: Смотри в объектив, а не на экран</h2>
       <p>Ты должен смотреть в камеру, даже если видишь себя на экране.</p>
@@ -370,7 +386,9 @@
         👁️ Смотри в область камеры. Можешь смотреть чуть левее, правее от камеры — для некоторых так проще.
       </div>
     </div>
-    <div class="step-card">
+
+    <div class="step-card step-shoot">
+      <div class="step-number">5</div>
       <div class="step-icon"><i class="fas fa-hands"></i></div>
       <h2>Шаг 5: Жестикулируй свободно</h2>
       <p>Позволь себе быть естественным:</p>
@@ -384,7 +402,8 @@
       </div>
     </div>
 
-    <div class="step-card">
+    <div class="step-card step-shoot">
+      <div class="step-number">6</div>
       <div class="step-icon"><i class="fas fa-comment"></i></div>
       <h2>Шаг 6: Говори чуть медленнее обычного</h2>
       <p>В камере всё звучит иначе. Чтобы тебя было легче понять:</p>
@@ -397,7 +416,12 @@
         🐢 Говори чуть медленнее. Так тебя легче понять.
       </div>
     </div>
-    <div class="step-card">
+
+    <div class="step-card step-shoot">
+      <div class="step-number">7</div>
+      <div class="step-icon"><i class="fas fa-play-circle"></i></div>
+      <h2>Шаг 7: Сними пробный ролик</h2>
+      <p>Запиши 20–30 секунд. Потом проверь:</p>
       <ul>
         <li>Ты в фокусе?</li>
         <li>Хорошо ли слышно голос?</li>
@@ -407,7 +431,8 @@
       <p>Если какой-то момент не нравится — поправь его. Лучше использовать микрофон для записи звука — петличный или от наушников. Если снимаешь на телефон — попробуй изменить камеру (фронтальная или задняя).</p>
     </div>
 
-    <div class="step-card">
+    <div class="step-card step-shoot">
+      <div class="step-number">8</div>
       <div class="step-icon"><i class="fas fa-film"></i></div>
       <h2>Шаг 8: Сними основное видео</h2>
       <p>Теперь — «настоящее» видео:</p>
@@ -417,23 +442,25 @@
       </div>
     </div>
 
-    <div class="step-card">
+    <div class="step-card step-edit">
+      <div class="step-number">9</div>
       <div class="step-icon"><i class="fas fa-subscript"></i></div>
       <h2>Шаг 9: Добавь субтитры</h2>
-      <p>80% смотрят видео без звука. Поэтому:</p>
+      <p>Большинство смотрят видео без звука, особенно в ленте. Поэтому:</p>
       <ul>
         <li>Включи субтитры в редакторе (Instagram, CapCut, YouTube)</li>
         <li>Проверь, правильно ли распознался текст</li>
         <li>Сделай шрифт крупным и контрастным</li>
       </ul>
       <div class="highlight">
-        📝 Добавь субтитры. Большинство смотрят без звука.
+        📝 Добавь субтитры. Это увеличит вовлечённость.
       </div>
     </div>
 
-    <div class="step-card">
+    <div class="step-card step-edit">
+      <div class="step-number">10</div>
       <div class="step-icon"><i class="fas fa-mobile-alt"></i></div>
-      <h2>Шаг 12: Пересмотри видео на телефоне</h2>
+      <h2>Шаг 10: Пересмотри видео на телефоне</h2>
       <p>Открой видео на маленьком экране:</p>
       <ul>
         <li>Чётко ли видно картинку?</li>
@@ -444,9 +471,11 @@
         📱 Проверь видео на телефоне — так увидишь, как оно выглядит у зрителя.
       </div>
     </div>
-    <div class="step-card">
+
+    <div class="step-card step-publish">
+      <div class="step-number">11</div>
       <div class="step-icon"><i class="fas fa-rocket"></i></div>
-      <h2>Шаг 15: Опубликуй и поделись</h2>
+      <h2>Шаг 11: Опубликуй и поделись</h2>
       <p>Ты прошёл все шаги. Теперь:</p>
       <ul>
         <li>Опубликуй видео</li>
